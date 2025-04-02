@@ -144,7 +144,7 @@
 </script>
   {{-- line chart --}}
   <script type="text/javascript">
-    const url = "{{route('product.order.income')}}";
+    const url = "{{route('product.order.income')}}?timestamp=" + new Date().getTime();
     // Set new default font family and font color to mimic Bootstrap's default styling
     Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
     Chart.defaults.global.defaultFontColor = '#858796';
@@ -228,9 +228,9 @@
                         ticks: {
                           maxTicksLimit: 5,
                           padding: 10,
-                          // Include a dollar sign in the ticks
+                          // Include a peso sign in the ticks
                           callback: function(value, index, values) {
-                            return '$' + number_format(value);
+                            return '₱' + number_format(value);
                           }
                         },
                         gridLines: {
@@ -262,7 +262,7 @@
                       callbacks: {
                         label: function(tooltipItem, chart) {
                           var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-                          return datasetLabel + ': $' + number_format(tooltipItem.yLabel);
+                          return datasetLabel + ': ₱' + number_format(tooltipItem.yLabel);
                         }
                       }
                     }
@@ -270,8 +270,7 @@
                 });
               })
               .catch(function (error) {
-              //   vm.answer = 'Error! Could not reach the API. ' + error
-              console.log(error)
+                console.log(error);
               });
 
   </script>

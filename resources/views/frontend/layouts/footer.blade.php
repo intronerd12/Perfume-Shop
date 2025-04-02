@@ -1,5 +1,4 @@
-
-	<!-- Start Footer Area -->
+<!-- Start Footer Area -->
 	<footer class="footer">
 		<!-- Footer Top -->
 		<div class="footer-top section">
@@ -9,7 +8,7 @@
 						<!-- Single Widget -->
 						<div class="single-footer about">
 							<div class="logo">
-								<a href="index.html"><img src="{{asset('backend/img/logo2.png')}}" alt="#"></a>
+								<span style="color: orange; font-size: 24px; font-weight: bold;">Perfume-Shop</span>
 							</div>
 							@php
 								$settings=DB::table('settings')->get();
@@ -50,7 +49,7 @@
 					<div class="col-lg-3 col-md-6 col-12">
 						<!-- Single Widget -->
 						<div class="single-footer social">
-							<h4>Get In Tuch</h4>
+							<h4>Get In Touch</h4>
 							<!-- Single Widget -->
 							<div class="contact">
 								<ul>
