@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 02, 2025 at 05:46 AM
+-- Generation Time: Apr 05, 2025 at 04:21 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 7.4.33
 
@@ -468,7 +468,9 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `photo`, `role`, `provider`, `provider_id`, `status`, `remember_token`, `created_at`, `updated_at`) VALUES
 (1, 'Admin', 'admin@gmail.com', NULL, '$2y$10$1kARzFKBUTIkpIwZcLZbwOLxjeI5gOKN9W/xxv21w4uRVAh5DneR.', '/storage/photos/1/39upIkbEsTgcE.jpg', 'admin', NULL, NULL, 'active', NULL, NULL, '2025-04-01 19:13:52'),
-(2, 'User', 'user@gmail.com', NULL, '$2y$10$ZcnyGVjDony6pbPBvjPqmet9qloxVUolpyQHGRkFNPvkCIqxtWO5.', NULL, 'user', NULL, NULL, 'active', NULL, NULL, NULL);
+(2, 'User', 'user@gmail.com', NULL, '$2y$10$ZcnyGVjDony6pbPBvjPqmet9qloxVUolpyQHGRkFNPvkCIqxtWO5.', NULL, 'user', NULL, NULL, 'active', NULL, NULL, NULL),
+(4, 'Axel Bumatay', 'bumatayaxel13@gmail.com', NULL, '$2y$10$t9/gRBHY5BkCGAzJd/7F8.fwT4h91UHIPytQeqlXXD6i/WuvibapK', NULL, 'user', NULL, NULL, 'active', NULL, '2025-04-05 05:18:58', '2025-04-05 05:18:58'),
+(5, 'Davi', 'bumatayjilian13@gmail.com', NULL, '$2y$10$HK1ObnvcG0Z0fBPUXrD1b.1igWRTNY4aQexthhuVsPXAzg.WTewTm', NULL, 'user', NULL, NULL, 'active', NULL, '2025-04-05 05:27:51', '2025-04-05 05:27:51');
 
 -- --------------------------------------------------------
 
@@ -786,7 +788,7 @@ ALTER TABLE `shippings`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `wishlists`
