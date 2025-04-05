@@ -11,6 +11,9 @@ use Carbon\Carbon;
 use Spatie\Activitylog\Models\Activity;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
+use App\Models\Order;
+use App\Notifications\OrderStatusUpdated;
+
 class AdminController extends Controller
 {
     public function index(){
@@ -145,5 +148,56 @@ class AdminController extends Controller
                 return redirect()->back();
             }
         }
+    }
+
+    public function updateOrderStatus(Request $request, Order $order)
+    {
+        $request->validate([
+            'status' => 'required|in:new,process,delivered,cancelled'
+        ]);
+
+        $order->status = $request->status;
+        $order->save();
+
+        // Send email notification
+        $order->user->notify(new OrderStatusUpdated($order));
+
+        return back()->with('success', 'Order status updated successfully');
+    }
+
+    public function getSalesData(Request $request)
+    {
+        $start = $request->get('start', Carbon::now()->startOfMonth());
+        $end = $request->get('end', Carbon::now());
+
+        $sales = Order::where('status', 'delivered')
+            ->whereBetween('created_at', [$start, $end])
+            ->selectRaw('DATE(created_at) as date, SUM(total_amount) as total')
+            ->groupBy('date')
+            ->get();
+
+        return response()->json([
+            'labels' => $sales->pluck('date'),
+            'values' => $sales->pluck('total')
+        ]);
+    }
+
+    public function getProductSales()
+    {
+        $products = Order::join('order_items', 'orders.id', '=', 'order_items.order_id')
+            ->join('products', 'products.id', '=', 'order_items.product_id')
+            ->where('orders.status', 'delivered')
+            ->selectRaw('products.title, SUM(order_items.quantity * order_items.price) as total')
+            ->groupBy('products.id', 'products.title')
+            ->get();
+
+        $total = $products->sum('total');
+        
+        return response()->json([
+            'labels' => $products->pluck('title'),
+            'values' => $products->map(function($product) use ($total) {
+                return round(($product->total / $total) * 100, 2);
+            })
+        ]);
     }
 }

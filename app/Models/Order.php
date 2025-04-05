@@ -2,6 +2,7 @@
 
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Order extends Model
 {
@@ -32,4 +33,19 @@ class Order extends Model
         return $this->belongsTo('App\User', 'user_id');
     }
 
+    public static function monthlyIncome()
+    {
+        $month = Carbon::now()->month;
+        return self::where('status', 'delivered')
+            ->whereMonth('created_at', $month)
+            ->sum('total_amount');
+    }
+
+    public static function yearlyIncome()
+    {
+        $year = Carbon::now()->year;
+        return self::where('status', 'delivered')
+            ->whereYear('created_at', $year)
+            ->sum('total_amount');
+    }
 }

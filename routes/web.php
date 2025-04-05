@@ -18,6 +18,8 @@
     use App\Http\Controllers\HomeController;
     use \UniSharp\LaravelFilemanager\Lfm;
     use App\Http\Controllers\Auth\ResetPasswordController;
+    use Illuminate\Support\Facades\Auth;
+    use Illuminate\Support\Facades\Mail;
     /*
     |--------------------------------------------------------------------------
     | Web Routes
@@ -41,7 +43,7 @@
     Route::get('storage-link',[AdminController::class,'storageLink'])->name('storage.link');
 
 
-    Auth::routes(['register' => false]);
+    Auth::routes(['register' => false, 'verify' => true]);
 
     Route::get('user/login', [FrontendController::class, 'login'])->name('login.form');
     Route::post('user/login', [FrontendController::class, 'loginSubmit'])->name('login.submit');
@@ -129,7 +131,7 @@
 
 // Backend section start
 
-    Route::group(['prefix' => '/admin', 'middleware' => ['auth', 'admin']], function () {
+    Route::group(['prefix' => '/admin', 'middleware' => ['auth', 'verified', 'admin']], function () {
         Route::get('/', [AdminController::class, 'index'])->name('admin');
         Route::get('/file-manager', function () {
             return view('backend.layouts.file-manager');
@@ -176,6 +178,9 @@
         // Password Change
         Route::get('change-password', [AdminController::class, 'changePassword'])->name('change.password.form');
         Route::post('change-password', [AdminController::class, 'changPasswordStore'])->name('change.password');
+
+        Route::get('/sales-data', [AdminController::class, 'getSalesData'])->name('admin.sales-data');
+        Route::get('/product-sales', [AdminController::class, 'getProductSales'])->name('admin.product-sales');
     });
 
 
@@ -209,4 +214,16 @@
 
     Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
         Lfm::routes();
+    });
+
+    Route::group(['middleware' => ['auth', 'verified']], function() {
+        // Protected routes that require verification
+        Route::get('/checkout', 'CheckoutController@index')->name('checkout');
+        // ...other protected routes...
+    });
+
+    Route::get('/test-email', function() {
+        $data = ['message' => 'This is a test email'];
+        Mail::to('bumatayjilian@gmail.com')->send(new \App\Mail\TestMail($data));
+        return 'Test email sent!';
     });

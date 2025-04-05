@@ -18,7 +18,7 @@
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Category</div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800">{{\App\Models\Category::countActiveCategory()}}</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">{{\App\Models.Category::countActiveCategory()}}</div>
               </div>
               <div class="col-auto">
                 <i class="fas fa-sitemap fa-2x text-gray-300"></i>
@@ -35,7 +35,7 @@
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Products</div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800">{{\App\Models\Product::countActiveProduct()}}</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">{{\App\Models.Product::countActiveProduct()}}</div>
               </div>
               <div class="col-auto">
                 <i class="fas fa-cubes fa-2x text-gray-300"></i>
@@ -44,6 +44,43 @@
           </div>
         </div>
       </div>
+
+      <!-- Monthly Sales -->
+      <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-info shadow h-100 py-2">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Monthly Sales</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">₱{{\App\Models\Order::monthlyIncome()}}</div>
+              </div>
+              <div class="col-auto">
+                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Yearly Sales -->
+      <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-warning shadow h-100 py-2">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Yearly Sales</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">₱{{\App\Models\Order::yearlyIncome()}}</div>
+              </div>
+              <div class="col-auto">
+                <i class="fas fa-calendar-alt fa-2x text-gray-300"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="row">
 
       <!-- Order -->
       <div class="col-xl-3 col-md-6 mb-4">
@@ -54,7 +91,7 @@
                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Order</div>
                 <div class="row no-gutters align-items-center">
                   <div class="col-auto">
-                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{\App\Models\Order::countActiveOrder()}}</div>
+                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{\App\Models.Order::countActiveOrder()}}</div>
                   </div>
                   
                 </div>
@@ -79,6 +116,38 @@
               <div class="col-auto">
                 <i class="fas fa-folder fa-2x text-gray-300"></i>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <!-- Sales Bar Chart -->
+      <div class="col-xl-8 col-lg-7">
+        <div class="card shadow mb-4">
+          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">Sales Overview</h6>
+            <div class="dropdown no-arrow">
+              <input type="text" class="form-control" id="daterange" name="daterange">
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="chart-bar">
+              <canvas id="salesBarChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Sales Pie Chart -->
+      <div class="col-xl-4 col-lg-5">
+        <div class="card shadow mb-4">
+          <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Product Sales Distribution</h6>
+          </div>
+          <div class="card-body">
+            <div class="chart-pie">
+              <canvas id="productSalesPie"></canvas>
             </div>
           </div>
         </div>
@@ -125,6 +194,9 @@
 @push('scripts')
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 {{-- pie chart --}}
 <script type="text/javascript">
   var analytics = <?php echo $users; ?>
@@ -274,4 +346,54 @@
               });
 
   </script>
+<script>
+$(function() {
+  // Date Range Picker
+  $('input[name="daterange"]').daterangepicker({
+    opens: 'left'
+  }, function(start, end, label) {
+    updateSalesChart(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
+  });
+
+  // Sales Bar Chart
+  function updateSalesChart(startDate, endDate) {
+    axios.get(`/admin/sales-data?start=${startDate}&end=${endDate}`)
+      .then(response => {
+        // Update bar chart with new data
+        salesBarChart.data.labels = response.data.labels;
+        salesBarChart.data.datasets[0].data = response.data.values;
+        salesBarChart.update();
+      });
+  }
+
+  // Product Sales Pie Chart
+  axios.get('/admin/product-sales')
+    .then(response => {
+      const ctx = document.getElementById('productSalesPie');
+      new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: response.data.labels,
+          datasets: [{
+            data: response.data.values,
+            backgroundColor: [
+              '#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b'
+            ]
+          }]
+        },
+        options: {
+          tooltips: {
+            callbacks: {
+              label: function(tooltipItem, data) {
+                const value = data.datasets[0].data[tooltipItem.index];
+                const label = data.labels[tooltipItem.index];
+                return `${label}: ${value}%`;
+              }
+            }
+          }
+        }
+      });
+    });
+});
+</script>
 @endpush

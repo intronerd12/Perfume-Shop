@@ -23,6 +23,27 @@
     <!-- Shop Login -->
     <section class="shop login section">
         <div class="container">
+            @if (session('resent'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Success!</strong> A fresh verification link has been sent to your email address. 
+                    <small>Please check your spam folder if you don't see it in your inbox.</small>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+            @if (session('register_success'))
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    <strong>Registration successful!</strong> Please check your email to verify your account.
+                    <form class="d-inline" method="POST" action="{{ route('verification.resend') }}">
+                        @csrf
+                        <button type="submit" class="btn btn-link p-0 m-0 align-baseline">Haven't received? Click here to resend</button>
+                    </form>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
             <div class="row"> 
                 <div class="col-lg-6 offset-lg-3 col-12">
                     <div class="login-form">
@@ -113,6 +134,19 @@
     }
     .btn-google:hover{
         background:rgb(243, 26, 26) !important;
+    }
+    .alert {
+        margin-bottom: 20px;
+    }
+    .alert button.close {
+        padding: 0.75rem 1.25rem;
+    }
+    .alert .btn-link {
+        text-decoration: underline;
+        color: #004085;
+    }
+    .alert .btn-link:hover {
+        color: #002752;
     }
 </style>
 @endpush
