@@ -117,12 +117,5 @@
           height: 100
       });
     });
-    $(document).ready(function() {
-      $('#description').summernote({
-        placeholder: "Write detail description.....",
-          tabsize: 2,
-          height: 150
-      });
-    });
 </script>
 @endpush

@@ -168,9 +168,11 @@ return [
         Barryvdh\DomPDF\ServiceProvider::class,
         Srmklive\PayPal\Providers\PayPalServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
+
         /*
          * Package Service Providers...
          */
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -237,6 +239,7 @@ return [
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'PayPal' => Srmklive\PayPal\Facades\PayPal::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ],
 

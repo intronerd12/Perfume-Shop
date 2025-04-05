@@ -24,7 +24,6 @@
               <th>Is Featured</th>
               <th>Price</th>
               <th>Discount</th>
-              <th>Size</th>
               <th>Condition</th>
               <th>Brand</th>
               <th>Stock</th>
@@ -41,7 +40,6 @@
               <th>Is Featured</th>
               <th>Price</th>
               <th>Discount</th>
-              <th>Size</th>
               <th>Condition</th>
               <th>Brand</th>
               <th>Stock</th>

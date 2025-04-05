@@ -87,6 +87,8 @@
         return view('frontend.pages.cart');
     })->name('cart');
     Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout')->middleware('user');
+    Route::get('checkout', 'CheckoutController@checkout')->name('checkout');
+    Route::post('checkout/store', 'CheckoutController@checkoutStore')->name('checkout.store');
 // Wishlist
     Route::get('/wishlist', function () {
         return view('frontend.pages.wishlist');
@@ -227,3 +229,7 @@
         Mail::to('bumatayjilian@gmail.com')->send(new \App\Mail\TestMail($data));
         return 'Test email sent!';
     });
+
+    //excel
+Route::get('admin/product/import', 'ProductImportController@show')->name('product.import');
+Route::post('admin/product/import', 'ProductImportController@import')->name('product.import.store');
