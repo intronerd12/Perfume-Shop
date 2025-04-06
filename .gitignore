@@ -1,7 +1,44 @@
 /vendor/
 /node_modules/
-/public/storage
-/storage/*.key
+
+# Storage configuration
+/public/storage/*
+!/public/storage/.gitkeep
+!/public/storage/photos/
+!/public/storage/images/
+
+# Product/Category Images
+!/public/storage/photos/1/
+!/public/storage/photos/1/*
+!/public/storage/photos/2/
+!/public/storage/photos/2/*
+
+# User Uploads
+!/public/storage/images/users/
+!/public/storage/images/users/*
+
+# Storage Framework
+/storage/*
+!/storage/app/
+!/storage/app/public/
+!/storage/framework/
+!/storage/logs/
+
+/storage/app/*
+!/storage/app/.gitkeep
+!/storage/app/public/photos/
+!/storage/app/public/images/
+
+/storage/framework/*
+!/storage/framework/.gitkeep
+!/storage/framework/cache/
+!/storage/framework/sessions/
+!/storage/framework/views/
+
+/storage/logs/*
+!/storage/logs/.gitkeep
+
+# Laravel specific
 .env
 .env.backup
 .phpunit.result.cache
