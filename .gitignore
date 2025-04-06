@@ -1,8 +1,23 @@
 /node_modules
 /vendor
 /storage/*.key
+
+# Preserve public folder but ignore specific contents
+/public/hot
+!/public/storage
+!/public/images
+!/public/photos
+!/public/uploads
+
+# Laravel specific
 .env.backup
 .phpunit.result.cache
 npm-debug.log
 yarn-error.log
 *.log
+
+# Keep specific public directories
+!/public/storage/photos/
+!/public/storage/photos/*
+!/public/storage/images/
+!/public/storage/images/*
