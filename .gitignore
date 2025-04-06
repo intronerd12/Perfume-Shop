@@ -39,7 +39,8 @@
 !/storage/logs/.gitkeep
 
 # Laravel specific
-.env
+.env.production
+.env.local
 .env.backup
 .phpunit.result.cache
 Homestead.json
